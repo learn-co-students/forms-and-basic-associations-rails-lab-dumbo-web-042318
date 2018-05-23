@@ -5,16 +5,24 @@ class SongsController < ApplicationController
 
   def show
     @song = Song.find(params[:id])
+    @artist = @song.artist
   end
 
   def new
     @song = Song.new
+    @artist = Artist.new
+    @genre = Genre.new
+    @genres = Genre.all
+    @note = Note.new
   end
 
   def create
     @song = Song.new(song_params)
-
     if @song.save
+      @song.create_artist(name: params[:song][:artist][:name])
+      @song.genre = Genre.find(params[:song][:genre][:id])
+      @song.note_contents = params[:song][:note_contents]
+      @song.save
       redirect_to @song
     else
       render :new
