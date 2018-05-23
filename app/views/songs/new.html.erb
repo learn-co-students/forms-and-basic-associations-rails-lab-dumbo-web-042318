@@ -4,7 +4,21 @@
   <%= f.label :title %>
   <%= f.text_field :title %>
   <br />
+  <%= f.fields_for @artist do |artist_hash| %>
+    <%= artist_hash.label :name %>
+    <%= artist_hash.text_field :name %>
+  <% end %>
 
+  <%= f.fields_for @genre do |genre_hash| %>
+    <%= genre_hash.select :id, options_from_collection_for_select(@genres, 'id', 'name') %>
+  <% end %>
+
+
+    <%= label_tag "notes" %>
+
+  <% 3.times do |i| %>
+    <br /><%= text_field_tag :"song[note_contents][]", @song.notes[i], id: "song_notes_#{i+1}" %>
+  <% end %>
   <%= f.submit %>
 <% end %>
 
